@@ -16,6 +16,10 @@ from filters.user_type import UserTypeFilter
 
 logger = logging.getLogger(__name__)
 
+def create_pool ():
+    """create pool connection to postgresql"""
+    pass
+
 
 async def main():
     bot = Bot(config.bot_token, parse_mode="HTML")
