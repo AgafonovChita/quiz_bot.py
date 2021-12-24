@@ -2,6 +2,7 @@ import asyncio
 import logging
 import config
 
+import asyncpg
 
 from aiogram import Bot, Dispatcher
 from aiogram.dispatcher.router import Router
