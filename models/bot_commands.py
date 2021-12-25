@@ -7,7 +7,7 @@ async def set_bot_commands(bot: Bot):
         # Commands in private chats (English and Russian)
         (
             [
-                BotCommand(command="main", description="Главное меню"),
+                BotCommand(command="start", description="Главное меню"),
                 BotCommand(command="mess_admin", description="Обратная связь"),
             ],
             BotCommandScopeAllPrivateChats(),
@@ -15,7 +15,7 @@ async def set_bot_commands(bot: Bot):
         ),
         (
             [
-                BotCommand(command="main", description="Главное меню"),
+                BotCommand(command="start", description="Главное меню"),
                 BotCommand(command="call_admin", description="Обратная связь"),
             ],
             BotCommandScopeAllPrivateChats(),
