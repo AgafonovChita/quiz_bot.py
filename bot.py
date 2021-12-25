@@ -39,8 +39,7 @@ async def main():
 
 
     # Define the only router
-    start_router = Router()
-    quiz_router = Router()
+    default_router = Router()
 
     dp = Dispatcher()
     dp.include_router(default_router)
@@ -59,12 +58,14 @@ async def main():
     register_callbacks(default_router)
     register_commands_new_user(default_router)
 
+
     try:
         await set_bot_commands(bot)
         await bot.get_updates(offset=-1)
         await dp.start_polling(bot, allowed_updates=dp.resolve_used_update_types())
     finally:
-        pass
+        #await bot.session.close()
+        await storage.close()
 
 
 if __name__ == "__main__":
