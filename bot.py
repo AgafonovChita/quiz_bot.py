@@ -2,11 +2,10 @@ import asyncio
 import logging
 import config
 
-import asyncpg
+from services import db_engine
 
 from aiogram import Bot, Dispatcher
 from aiogram.dispatcher.router import Router
-
 
 from models.bot_commands import set_bot_commands
 from handlers.commands import register_commands
@@ -16,14 +15,8 @@ from filters.chat_type import ChatTypeFilter
 from filters.user_type import UserTypeFilter
 from middlewares.db_pool import DBPool
 
+
 logger = logging.getLogger(__name__)
-
-
-async def create_pool():
-    pool = await asyncpg.create_pool(host=config.db_host,
-                                     port=config.db_port, user=config.db_user, password=config.db_pass,
-                                     database=config.db_type)
-    return pool
 
 
 async def main():
@@ -35,7 +28,7 @@ async def main():
     logger.error("Starting bot")
 
     # get pool connect to db (asyncpg)
-    pool = await create_pool()
+    pool = await db_engine.create_pool()
 
     # define the only router
     start_router = Router()
