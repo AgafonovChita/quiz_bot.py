@@ -43,35 +43,26 @@ async def main():
     quiz_router = Router()
 
     dp = Dispatcher()
-    dp.include_router(start_router)
-    dp.include_router(quiz_router)
+    dp.include_router(default_router)
 
     # Register filters
-    # default_router.message.bind_filter(ChatTypeFilter)
-    # default_router.callback_query.bind_filter(UserTypeFilter)
-    start_router.message.bind_filter(UserTypeFilter)
-    quiz_router.message.bind_filter(UserTypeFilter)
-
+    default_router.message.bind_filter(ChatTypeFilter)
+    #default_router.callback_query.bind_filter(UserTypeFilter)
+    default_router.message.bind_filter(UserTypeFilter)
 
     # DB pool-connection forward middlewares
-    quiz_router.message.outer_middleware(DBPool(pool=pool))
-    quiz_router.callback_query.outer_middleware(DBPool(pool=pool))
-
-
-    start_router.message.outer_middleware(DBPool(pool=pool))
-    start_router.callback_query.outer_middleware(DBPool(pool=pool))
-
+    default_router.message.outer_middleware(DBPool(pool=pool))
+    default_router.callback_query.outer_middleware(DBPool(pool=pool))
 
     # Register handlers
-    register_commands(quiz_router)
-    register_callbacks(quiz_router)
-    register_commands_new_user(start_router)
-
+    register_commands(default_router)
+    register_callbacks(default_router)
+    register_commands_new_user(default_router)
 
     try:
         await set_bot_commands(bot)
         await bot.get_updates(offset=-1)
-        await dp.start_polling(bot, allowed_updates=dp.resolve_used_update_types(), pool=pool)
+        await dp.start_polling(bot, allowed_updates=dp.resolve_used_update_types())
     finally:
         pass
 
