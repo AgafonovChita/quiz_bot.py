@@ -2,7 +2,7 @@ from typing import Any, Awaitable, Callable, Dict
 
 from aiogram import BaseMiddleware
 from aiogram.types import TelegramObject
-from db.db_engine import DB_engine
+from services.db_engine import DB_engine
 
 
 class DBPool(BaseMiddleware):

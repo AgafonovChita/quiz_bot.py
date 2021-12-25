@@ -6,7 +6,7 @@ from aiogram.dispatcher.fsm.context import FSMContext
 from models.states import RegisterUser
 from handlers.commands import cmd_start
 
-from db.db_engine import DB_engine
+from services.db_engine import DB_engine
 
 
 async def register_user(message: types.Message, state=FSMContext):

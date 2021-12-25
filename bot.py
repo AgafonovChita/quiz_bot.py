@@ -37,8 +37,7 @@ async def main():
     # get pool connect to db (asyncpg)
     pool = await create_pool()
 
-
-    # Define the only router
+    # define the only router
     start_router = Router()
     quiz_router = Router()
 
@@ -52,21 +51,18 @@ async def main():
     start_router.message.bind_filter(UserTypeFilter)
     quiz_router.message.bind_filter(UserTypeFilter)
 
-
     # DB pool-connection forward middlewares
+    start_router.message.outer_middleware(DBPool(pool=pool))
+    start_router.callback_query.outer_middleware(DBPool(pool=pool))
     quiz_router.message.outer_middleware(DBPool(pool=pool))
     quiz_router.callback_query.outer_middleware(DBPool(pool=pool))
 
-
-    start_router.message.outer_middleware(DBPool(pool=pool))
-    start_router.callback_query.outer_middleware(DBPool(pool=pool))
-
-
-    # Register handlers
-    register_commands(quiz_router)
-    register_callbacks(quiz_router)
+    # register handlers to start_router
     register_commands_new_user(start_router)
 
+    # register handlers to quiz_router
+    register_commands(quiz_router)
+    register_callbacks(quiz_router)
 
     try:
         await set_bot_commands(bot)

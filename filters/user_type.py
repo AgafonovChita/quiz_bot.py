@@ -3,7 +3,7 @@ from aiogram.dispatcher.filters import BaseFilter
 from aiogram import types
 
 from typing import Union, List, Dict, Any
-from db.db_engine import DB_engine
+from services.db_engine import DB_engine
 
 
 class UserTypeFilter(BaseFilter):

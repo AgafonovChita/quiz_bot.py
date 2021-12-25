@@ -4,7 +4,7 @@ from aiogram import types
 from aiogram.dispatcher.router import Router
 from aiogram.dispatcher.filters.command import Command
 
-from db.db_engine import DB_engine
+from services.db_engine import DB_engine
 
 from keyboards import main_keyboards
 
