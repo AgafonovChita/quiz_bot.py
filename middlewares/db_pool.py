@@ -17,18 +17,17 @@ class DBPool(BaseMiddleware):
             data: Dict[str, Any],
     ) -> Any:
         async with self.pool.acquire() as session:
-            data['db_connect'] = session
+            #data['db_connect'] = session
             data['db_engine'] = DB_engine(session)
+
 
             result = await handler(event, data)
 
-            data.pop('db_connect')
-            data.pop('db_engine')
-            db_connect = data.get("db_connect")
-            db_engine = data.get("db_engine")
 
-            if db_connect:
-                await db_connect.close()
+            #data.pop('db_connect')
+            data.pop('db_engine')
+            #db_connect = data.get("db_connect")
+            db_engine = data.get("db_engine")
 
             if db_engine:
                 await db_engine.close()
