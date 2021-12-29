@@ -34,13 +34,13 @@ async def generate_topic_key(db_engine):
     keyboard_topic.adjust(3, repeat=True)
     return keyboard_topic.as_markup()
 
+
 # -> let's go keyboard
 async def generate_goquiz_key():
     keyboard_topic = InlineKeyboardBuilder()
     keyboard_topic.add(
         InlineKeyboardButton(text='Погнали', callback_data="go_quiz")
     )
-
     keyboard_topic.adjust(1, repeat=False)
     return keyboard_topic.as_markup()
 

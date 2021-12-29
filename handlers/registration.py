@@ -21,6 +21,6 @@ async def get_nickname_user(message:types.Message, db_engine:DB_engine, state=FS
     await cmd_start(message, db_engine)
 
 
-def register_commands_new_user(router:Router):
+def register_commands_new_user(router: Router):
     router.message.register(register_user, Command(commands="start"), user_type='new')
     router.message.register(get_nickname_user, state=RegisterUser.user_nickname, user_type='new')

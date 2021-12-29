@@ -9,6 +9,7 @@ async def create_pool():
                                      database=config.db_type)
     return pool
 
+
 class DB_engine:
     def __init__(self, conn):
         self.conn = conn
