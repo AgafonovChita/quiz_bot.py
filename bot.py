@@ -8,8 +8,7 @@ from aiogram import Bot, Dispatcher
 from aiogram.dispatcher.router import Router
 
 from models.bot_commands import set_bot_commands
-from handlers.commands import register_commands
-from handlers.callbacks import register_callbacks
+from handlers.commands import register_commands_main
 from handlers.registration import register_commands_new_user
 from filters.chat_type import ChatTypeFilter
 from filters.user_type import UserTypeFilter
@@ -32,30 +31,29 @@ async def main():
 
     # define the only router
     start_router = Router()
-    quiz_router = Router()
+    main_router = Router()
 
     dp = Dispatcher()
     dp.include_router(start_router)
-    dp.include_router(quiz_router)
+    dp.include_router(main_router)
 
     # Register filters
     # default_router.message.bind_filter(ChatTypeFilter)
     # default_router.callback_query.bind_filter(UserTypeFilter)
     start_router.message.bind_filter(UserTypeFilter)
-    quiz_router.message.bind_filter(UserTypeFilter)
+    main_router.message.bind_filter(UserTypeFilter)
 
     # DB pool-connection forward middlewares
     start_router.message.outer_middleware(DBPool(pool=pool))
     start_router.callback_query.outer_middleware(DBPool(pool=pool))
-    quiz_router.message.outer_middleware(DBPool(pool=pool))
-    quiz_router.callback_query.outer_middleware(DBPool(pool=pool))
+    main_router.message.outer_middleware(DBPool(pool=pool))
+    main_router.callback_query.outer_middleware(DBPool(pool=pool))
 
     # register handlers to start_router
     register_commands_new_user(start_router)
-
     # register handlers to quiz_router
-    register_commands(quiz_router)
-    register_callbacks(quiz_router)
+    register_commands_main(main_router)
+
 
     try:
         await set_bot_commands(bot)
