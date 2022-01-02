@@ -61,7 +61,7 @@ async def main():
     main_router.message.outer_middleware(DBPool(pool=pool))
     main_router.callback_query.outer_middleware(DBPool(pool=pool))
     admin_router.message.outer_middleware(DBPool(pool=pool))
-    admin_router.callback_query.middlewares(DBPool(pool=pool))
+    admin_router.callback_query.outer_middleware(DBPool(pool=pool))
 
 
     # register handlers to start_router, main_router, quiz_router

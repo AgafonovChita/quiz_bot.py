@@ -7,7 +7,6 @@ from aiogram.dispatcher.fsm.context import FSMContext
 
 from magic_filter import F
 
-from keyboards.quiz_keyboards import generate_type_quiz_keyboard
 from keyboards.main_keyboards import DataTopic
 
 """Должен быть калбек-хендлер, который среагирвет на go_quiz"""

@@ -1,3 +1,4 @@
+import random
 from typing import List
 import asyncpg
 import config
@@ -54,3 +55,11 @@ class DB_engine:
         if quest:
             return quest
         return "Question not found"
+
+    async def add_topic(self, id_topic, name_topic, descript_topic, author_topic, timer_topic, count_quest, active_topic):
+        query = '''INSERT INTO topics 
+                                   (id_topic, name_topic, descript_topic, author_topic,
+                                                timer_topic, count_quest, active_topic) 
+                                                                VALUES ($1, $2, $3, $4, $5, $6, $7)'''
+        params = id_topic, name_topic, descript_topic, author_topic, int(timer_topic), int(count_quest), bool(active_topic)
+        await self.conn.execute(query, *params)
