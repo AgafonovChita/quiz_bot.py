@@ -4,7 +4,7 @@ from aiogram.dispatcher.filters.command import Command
 from aiogram.dispatcher.fsm.context import FSMContext
 
 from models.states import RegisterUser
-from handlers.commands import cmd_start
+from handlers.main import cmd_start
 
 from services.db_engine import DB_engine
 
@@ -14,7 +14,7 @@ async def register_user(message: types.Message, state=FSMContext):
     await state.set_state(RegisterUser.user_nickname)
 
 
-async def get_nickname_user(message:types.Message, db_engine:DB_engine, state=FSMContext, ):
+async def get_nickname_user(message:types.Message, db_engine:DB_engine, state=FSMContext):
     await message.answer('Очень приятно, '+message.text)
     await state.clear()
     await db_engine.add_user(message.chat.id, message.text, message.chat.first_name+' '+message.chat.last_name, message.chat.username, message.date)

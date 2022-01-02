@@ -8,9 +8,10 @@ from aiogram import Bot, Dispatcher
 from aiogram.dispatcher.router import Router
 
 from models.bot_commands import set_bot_commands
-from handlers.commands import register_commands_main
+from handlers.main import register_commands_main
 from handlers.registration import register_commands_new_user
 from handlers.quiz import register_quiz_engine
+from handlers.admin import register_admin
 
 from filters.chat_type import ChatTypeFilter
 from filters.user_type import UserTypeFilter
@@ -32,35 +33,43 @@ async def main():
     # get pool connect to db (asyncpg)
     pool = await db_engine.create_pool()
 
-    # define the only router
-    start_router = Router()
+    # dregistration the only router
+    registration_router = Router()
     main_router = Router()
     quiz_router = Router()
+    admin_router = Router()
 
     dp = Dispatcher()
-    dp.include_router(start_router)
-    dp.include_router(main_router)
     dp.include_router(quiz_router)
+    dp.include_router(registration_router)
+    dp.include_router(main_router)
+    dp.include_router(admin_router)
+
 
     # Register filters
     # default_router.message.bind_filter(ChatTypeFilter)
     # default_router.callback_query.bind_filter(UserTypeFilter)
-    start_router.message.bind_filter(UserTypeFilter)
+    registration_router.message.bind_filter(UserTypeFilter)
     main_router.message.bind_filter(UserTypeFilter)
-
+    admin_router.message.bind_filter(UserTypeFilter)
 
     # DB pool-connection forward middlewares
-    start_router.message.outer_middleware(DBPool(pool=pool))
-    start_router.callback_query.outer_middleware(DBPool(pool=pool))
-    main_router.message.outer_middleware(DBPool(pool=pool))
-    main_router.callback_query.outer_middleware(DBPool(pool=pool))
     quiz_router.message.outer_middleware(DBPool(pool=pool))
     quiz_router.callback_query.outer_middleware(DBPool(pool=pool))
+    registration_router.message.outer_middleware(DBPool(pool=pool))
+    registration_router.callback_query.outer_middleware(DBPool(pool=pool))
+    main_router.message.outer_middleware(DBPool(pool=pool))
+    main_router.callback_query.outer_middleware(DBPool(pool=pool))
+    admin_router.message.outer_middleware(DBPool(pool=pool))
+    admin_router.callback_query.middlewares(DBPool(pool=pool))
+
 
     # register handlers to start_router, main_router, quiz_router
-    register_commands_new_user(start_router)
-    register_commands_main(main_router)
     register_quiz_engine(quiz_router)
+    register_commands_new_user(registration_router)
+    register_commands_main(main_router)
+    register_admin(admin_router)
+
 
 
     try:

@@ -15,7 +15,7 @@ class DataTopic(CallbackData, prefix="topic"):
 async def generate_main_key():
     keyboard_start = InlineKeyboardBuilder()
     keyboard_start.add(
-        InlineKeyboardButton(text="Go to quiz", callback_data="start_quiz"),
+        InlineKeyboardButton(text="Go to quiz", callback_data="go_main_quiz"),
         InlineKeyboardButton(text="Рейтинг участников", callback_data="get_rating")
     )
     keyboard_start.adjust(1, repeat=True)
@@ -36,12 +36,13 @@ async def generate_topic_key(db_engine):
 
 
 # -> let's go keyboard
-async def generate_goquiz_key():
+async def generate_goquiz_key(id_topic):
     keyboard_topic = InlineKeyboardBuilder()
     keyboard_topic.add(
-        InlineKeyboardButton(text='Погнали', callback_data="go_quiz")
+        InlineKeyboardButton(text='Погнали', callback_data="start_quiz"),
+        InlineKeyboardButton(text='Я передумал', callback_data="cancel_quiz")
     )
-    keyboard_topic.adjust(1, repeat=False)
+    keyboard_topic.adjust(2)
     return keyboard_topic.as_markup()
 
 

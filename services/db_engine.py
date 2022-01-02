@@ -46,3 +46,11 @@ class DB_engine:
         if topic_data:
             return topic_data
         return ['Topic not found', 'Topic not found', 'Topic not found', 'Topic not found', 'Topic not found', 'Topic not found', ]
+
+    async def get_quest(self, id_topic, list_quest_old):
+        query = '''SELECT * FROM questions WHERE id_topic=$1 and id_quest not in $2'''
+        params = id_topic, list_quest_old
+        quest = await self.conn.fetch(query, params)
+        if quest:
+            return quest
+        return "Question not found"
