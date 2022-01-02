@@ -28,7 +28,7 @@ async def save_new_topic(message: types.Message, db_engine: DB_engine, state: FS
     data = message.text.split("::")
     id_topic = random.randint(1, 100000)
     print(data)
-    await db_engine.add_topic(id_topic, data[0], data[1], data[2], data[3], data[4], data[5]
+    await db_engine.add_topic(id_topic, data[0], data[1], data[2], data[3], data[4], data[5])
     await state.clear()
 
 
